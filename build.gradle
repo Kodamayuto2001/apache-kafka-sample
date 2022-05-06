@@ -48,5 +48,5 @@ project.subprojects.each { subProject ->
 }
 
 tasks.named("wrapper") {
-        gradleVersion = "7.3.3"
+    gradleVersion = "7.3.3"
 }
