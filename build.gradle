@@ -1,0 +1,52 @@
+plugins {
+	id 'application'
+
+    id "com.avast.gradle.docker-compose" version "0.16.3"
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    group = 'com.dharma'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+
+    [compileJava, compileTestJava]*.options*.encoding = "UTF-8"
+
+    tasks.withType(Javadoc).configureEach { Javadoc javadoc ->
+        javadoc.options.encoding = 'UTF8'
+        javadoc.options.addStringOption('Xdoclint:all,-missing', '-quiet')
+    }
+
+    dependencies {
+        // https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
+	    implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.1.0'
+
+        // https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams
+	    implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '3.1.0'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+dockerCompose {
+	useComposeFiles = ['docker-compose.yml']
+    waitForTcpPorts = true
+    projectName = project.name
+}
+
+project.subprojects.each { subProject ->
+    subProject.test.dependsOn composeUp
+    subProject.test.finalizedBy composeDown
+}
+
+tasks.named("wrapper") {
+  gradleVersion = "7.3.3"
+}
