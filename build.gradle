@@ -24,10 +24,10 @@ subprojects {
     }
 
     dependencies {
-        // https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
+		// https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
 		implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.1.0'
 
-        // https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams
+		// https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams
 		implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '3.1.0'
     }
 
@@ -48,5 +48,5 @@ project.subprojects.each { subProject ->
 }
 
 tasks.named("wrapper") {
- 	gradleVersion = "7.3.3"
+    gradleVersion = "7.3.3"
 }
